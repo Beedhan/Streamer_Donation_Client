@@ -1,25 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext } from "react";
+import "./App.css";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import DonationPage from "./pages/DonationPage";
+import Alerts from "./pages/Alerts";
+import LandingPage from "./pages/LandingPage";
+import Login from "./pages/LoginPage";
+import DashBoard from "./pages/DashBoardPage";
+import { AuthContext } from "./context/Authcontext";
+import Dashboard from "./components/Dashboard/DashboardTab/Dashboard";
 
 function App() {
+  const { user, setUserData, userData, isAuthenticated } = useContext(
+    AuthContext
+  );
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route
+            
+            path="/dashboard/"
+            render={() =>
+              isAuthenticated ? (
+                <DashBoard/>
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route
+            
+            path="/dashboard/:subPath"
+           component={Dashboard}
+          />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/widgets/alerts/" component={Alerts} />
+          <Route exact path="/donate/:userId" component={DonationPage} />
+        </Switch>
+      </Router>
+    </>
   );
 }
 

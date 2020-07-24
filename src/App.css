@@ -1,38 +1,237 @@
-.App {
-  text-align: center;
+@import url("https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&display=swap");
+
+* {
+  font-family: "Balsamiq Sans", cursive;
+  max-width: 100%;
+}
+.row{
+  margin: 0 !important;
+}
+.darkerBackground{
+  background-color: #1D222A !important;
+}
+.darkerBackground:focus{
+  background-color: #1D222A;
+}
+.darkerBackground:hover{
+  background-color: #1D222A;
+}
+.lighterBackground{
+  background-color: #222831 !important;
+}
+.purpleText{
+  color:#6C63FF !important;
+}
+.landingFirst-container{
+  margin-top:80px;
+  margin-left: 50px;
+}
+.landingNav  {
+  background-color: #222831;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.landingFirst{
+  background-color: #222831;
+}
+.landingSecond {
+  background-color: #1D222A;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.landingFirstH2 {
+  width: 35rem;
+}
+.landingFirstH5 {
+  width: 30rem;
+  color: rgb(133, 130, 130);
+
+}
+.landing-btn-join {
+  background-color: white;
+  color: black;
+  border-radius: 25px;
+  margin-top: 20px;
 }
 
-.App-header {
-  background-color: #282c34;
+.landing-btn-join:hover {
+  background-color: rgb(216, 211, 211);
+}
+
+.waves-effect.waves-btn .waves-ripple {
+  /* The alpha value allows the text and background color
+  of the button to still show through. */
+  background-color: rgb(136, 133, 133);
+}
+
+.landing-stats{
+  margin-top:50px;
+
+}
+.landing-stats-text{
+  width:70%;
+  margin-top: -20px;
+  color:white
+}
+.landing-stats-num{
+  width:70%;
+  color:#6C63FF;
+}
+
+.landingSecond-supported{
+  color:#6C63FF;
+}
+.container{
+  width:95% 
+}
+.page-footer{
+  background-color:#222831
+}
+.landing-logo{
+  margin-left: 20px;
+}
+.landing-logo:hover{
+  opacity: 50%;
+}
+.logo-large{
+  margin-left:20px
+}
+.footer-link{
+  color:#6C63FF !important;
+}
+.footer-link:hover{
+  color:rgb(165, 160, 245) !important;
+}
+.btn-login{
+  height: 70px;
+  width:90%;
+  background-color:#B42828;
+  border-radius: 15px;
+  margin-top: 50px !important;
+}
+.btn-login:hover{
+  background-color:rgb(218, 64, 64)
+}
+.login-content{
+  margin-top:10px;
+  margin-left:25%;
+  font-size: 2em;
+  text-transform: none;
+}
+.login-with{
+  color:#6C63FF;
+  font-size: 33px;
+}
+.login-container{
+  background-color: #222831;
+  margin-top:50px ;
+}
+.button-content{
+  margin-top:3%;
+}
+.login-page{
+  background-color: #222831;
+
+}
+.svg-landing-first {
+  max-width: 115%;
+  max-height: 10%;
+}
+.svg-img {
+  margin: -130px 10px;
+}
+.svg-img-login {
+  margin: -80px 0px;
+}
+.svg-login{
+  max-width: 125%;
+}
+.side-button{
+  width:100%;
+  padding: 5% 0 5% 10%;
+}
+.dashboard-icon{
+  margin-right:15px
+}
+.max-vh{
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+}
+.dashboard-container{
+  background-color: #222831;
+  padding-left: 350px;
+}
+.profile-pic{
+  width: 10%;
+  height: auto;
+  object-fit: cover;
+}
+.user-copyBtn{
+  background-color: #1D222A;
+  cursor: pointer;
+  margin-left: 20px;
+}
+.user-copyBtn:hover{
+  background-color: rgb(38, 42, 49);
+  cursor: pointer;
+}
+.tabs .indicator{
+  background-color:#6C63FF !important;
+}
+.tabs .tab a.active {
+  background-color:#222831;
+}
+.alert-tabs{
+  height: 400px;
+  padding: 1px 20px 20px 5px;
+  border-radius: 20px;
+  width: 98%;
+}
+input[type=range]::-webkit-slider-thumb {
+  background-color: #6C63FF;
+}
+input[type=range]::-moz-range-thumb {
+  background-color: #6C63FF;
+}
+input[type=range]::-ms-thumb {
+  background-color: #6C63FF;
 }
 
-.App-link {
-  color: #61dafb;
+/***** These are to edit the thumb and the text inside the thumb *****/
+input[type=range] + .thumb {
+  background-color: #dedede;
 }
+input[type=range] + .thumb.active .value {
+  color: #6C63FF;
+}
+.alert-url{
+  color: transparent;
+  text-shadow:0 0 5px rgba(0,0,0,0.5); ;
+}
+.darkBtn:hover{
+  background-color:#222831 ;
+}
+.darkBtn:focus{
+  background-color: #222831;
+}
+.gifContainer{
+}
+.rhap_time{
+  color:white !important;
+}
+.rhap_button-clear:focus{
+  background-color:#222831;
+}
+.events{
+  width: 100%;
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+}
+.history{
+  width: 100%;
+  border-radius: 10px;
+  padding:10px 0 10px 0;
+  margin-top: 10px;
+}
+.historyContents{
+  margin-left: 15px;
+}
+table.highlight>tbody>tr:hover {
+  background-color: #3d4249;
 }
