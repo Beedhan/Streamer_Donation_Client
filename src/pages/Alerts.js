@@ -3,18 +3,20 @@ import io from "socket.io-client";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { Url } from "../others/ApiLinks";
-const socket = io("ws://192.168.1.78:8000/");
+const socket = io("ws://localhost:8000/");
 
-const Alerts = ({ match }) => {
+const Alerts = () => {
   const token = new URLSearchParams(useLocation().search).get("token");
   const [gifData, setGifData] = useState("");
   const [donationData, setDonationData] = useState({});
   const [currentAnimation, setCurrentAnimation] = useState("");
   const [gotDonaton, setGotDonaton] = useState(false);
+  const [donationQueue, setDonationQueue] = useState([]);
+  const [userData, setuserData] = useState();
+  const [changingValue, setchangingValue] = useState(0);
 
   useEffect(() => {
-    socket.emit("room", token);
-        const fetchData = () => {
+    const fetchData = () => {
       axios
         .get(`${Url}/alerts/getAlertData?token=${token}`, {
           headers: {
@@ -22,63 +24,91 @@ const Alerts = ({ match }) => {
           },
         })
         .then((userData) => {
-           socket.on("check", (msg) => {
-            console.log(msg,userData);
+    socket.emit("room", token);
+          setuserData(userData.data);
+          socket.on("check", (msg) => {
+            console.log(msg, userData);
           });
-      
+
           socket.on("Alert", (msg) => {
-            let audio = new Audio(require(`../audio/${userData.data.SelectedAudio}.mp3`))
-            audio.play();
-            setGotDonaton(true);
-            setDonationData(msg);
-            setGifData(userData.data.SelectedImage);
-            setCurrentAnimation(userData.data.AnimationIn);
-            setTimeout(() => {
-            setCurrentAnimation(userData.data.AnimationOut);
-            audio.remove();
-              setTimeout(() => {
-                setGotDonaton(false);
-              }, 1500);
-            }, userData.data.AlertsDuration*1000);
+            console.log("Got alert")
+           setDonationQueue(prevstate=>[...prevstate,msg]);
+            if (donationQueue.length === 0) {
+              setchangingValue(changingValue+1);
+            }else{
+              return;
+            }
+            //adding messages to the queue
           });
         });
     };
     fetchData();
-
   }, [token]);
 
+  useEffect(() => {
+    if (userData &&donationQueue.length!==0 && gotDonaton===false) {
+      console.log(donationQueue);
+      let audio = new Audio(require(`../audio/${userData.SelectedAudio}.mp3`));
+      var msg = new SpeechSynthesisUtterance(donationQueue[0].donationMessage);
+      window.speechSynthesis.speak(msg);
+
+      audio.play();
+      setGotDonaton(true);
+      // setDonationData(donationQueue[0]);
+      setGifData(userData.SelectedImage);
+      setCurrentAnimation(userData.AnimationIn);
+
+      //Here stopping the parts in alerts part by part 
+      setTimeout(() => {
+        setCurrentAnimation(userData.AnimationOut);
+        audio.remove();
+        setTimeout(() => {
+          setGotDonaton(false);
+          setDonationQueue(prev=>prev.slice(1));
+          setTimeout(() => {
+            //third timeout to wait for the changes to happen
+            setchangingValue(changingValue+2);
+          }, 3000);
+        }, 1500);
+      }, userData.AlertsDuration * 1000);
+    }
+  }, [changingValue]);
 
   return (
     <div>
       {gotDonaton && (
         <>
           <div id="background" />
-          {gifData !=="" && (
-            <div className="container" style={{ marginTop: "100px", marginLeft: " 50px" }}>
-          {console.log(gifData)}
+          {gifData !== "" && (
+            <div
+              className="container"
+              style={{ marginTop: "100px", marginLeft: " 50px" }}
+            >
+              {console.log(donationQueue[0])}
               <div id="Alert">
-              <div style={{marginLeft: " 250px" }}>
-              <img
-                  src={require(`../Gifs/${gifData}.gif`)}
-                  className={`center animate__animated animate__${currentAnimation}`}
-                  alt="this slowpoke moves"
-                  width="200px"
-                  height="auto"
-                />
-              </div>
-                
-                <h1 className={`white-text animate__animated animate__${currentAnimation}`}>
+                <div style={{ marginLeft: " 250px" }}>
+                  <img
+                    src={require(`../Gifs/${gifData}.gif`)}
+                    className={`center animate__animated animate__${currentAnimation}`}
+                    alt="this slowpoke moves"
+                    width="200px"
+                    height="auto"
+                  />
+                </div>
+
+                <h1
+                  className={`white-text animate__animated animate__${currentAnimation}`}
+                >
                   <strong className="Alert center-align">
-                    {donationData.donatorName} just donated Rs {donationData.donationAmount}
+                    {donationQueue[0].donatorName} just donated Rs{" "}
+                    {donationQueue[0].donationAmount}
                   </strong>
                 </h1>
                 <h2
-                  className={`center-align white-text animate__animated animate__${
-                    currentAnimation
-                  } animate__delay-1s AlertH2`}
+                  className={`center-align white-text animate__animated animate__${currentAnimation} animate__delay-1s AlertH2`}
                   style={{ marginTop: "20px" }}
                 >
-                  {donationData.donationMessage}
+                  {donationQueue[0].donationMessage}
                 </h2>
               </div>
             </div>

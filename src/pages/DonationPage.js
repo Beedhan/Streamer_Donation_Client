@@ -21,12 +21,13 @@ function DonationPage({ match }) {
         },
       })
       .then((data) => {
-        socket.emit("room", data.data.roomId);
+        socket.emit("room",data.data.roomId);
+
         setUsertoken(data.data.roomId);
         socket.on("check", (msg) => {
           console.log(msg);
         });
-        socket.on("Alert", (msg) => {
+        socket.on("thanksForDonation", (msg) => {
           console.log(msg);
           setThankYou(true);
         });
@@ -67,6 +68,7 @@ function DonationPage({ match }) {
             donationMessage: message,
             token: payload.token,
             amount: payload.amount,
+            donationPageId:socket.id
           });
         },
         // onError handler is optional

@@ -6,6 +6,12 @@ import AlertGeneral from "./AlertGeneral";
 import AlertImage from "./AlertImage";
 import AuthService from "../../../services/AuthService";
 import AlertSound from "./AlertSound";
+import axios from "axios";
+import { Url } from "../../../others/ApiLinks";
+import io from "socket.io-client";
+
+const socket = io("ws://localhost:8000/");
+
 const DashboardAlerts = () => {
   const [copied, setcopied] = useState(false);
   const [show, setshow] = useState(false);
@@ -13,6 +19,8 @@ const DashboardAlerts = () => {
   const { userData } = useContext(AuthContext);
 
   useEffect(() => {
+    
+    socket.emit("room",userData.token);
     AuthService.getAlerts().then((alertData) =>{ 
       setAlertData(alertData)
       var el = document.querySelectorAll(".tabs");
@@ -24,10 +32,15 @@ const DashboardAlerts = () => {
     });
     
   }, []);
-
   const handleSave =()=>{
     AuthService.saveAlerts(alertData);
   }
+  const handleTest =()=>{
+    socket.emit("testing",userData.token);
+    console.log("Testing hai");
+    
+  }
+
 
   return (
     <div className="max-vh dashboard-container">
@@ -52,6 +65,12 @@ const DashboardAlerts = () => {
                   Copy
                 </button>
               </CopyToClipboard>
+              <button
+                className="user-copyBtn btn-small waves-effect"
+                onClick={() => handleTest()}
+              >
+                Test
+              </button>
             </div>
           </h6>
         </div>
