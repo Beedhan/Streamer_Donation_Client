@@ -53,11 +53,10 @@ function DonationPage({ match }) {
     let config = {
       // replace this key with yours
       publicKey:
-        process.env.KhaltiKey ||
-        "test_public_key_95a27852dfa44e0bb390b0d2d4b1160b",
+        process.env.KhaltiKey,
       productIdentity: "1",
       productName: "Donate",
-      productUrl: "https://secretdonationserver.glitch.me/",
+      productUrl:process.env.REACT_APP_PRODUCTION_URL,
       eventHandler: {
         onSuccess(payload) {
           // hit merchant api for initiating verfication
